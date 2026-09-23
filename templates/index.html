@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Image Translator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070') no-repeat center center/cover;
+}
+
+.overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.55);
+}
+
+.container{
+    position:relative;
+    width:90%;
+    max-width:1000px;
+    z-index:10;
+}
+
+.card{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:20px;
+    padding:30px;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+
+    animation:slideUp 1s ease;
+}
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(50px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.title{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.title h1{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.title p{
+    color:#ddd;
+}
+
+.upload-section{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+input[type=file]{
+    flex:1;
+    padding:12px;
+    background:white;
+    border:none;
+    border-radius:10px;
+}
+
+.btn{
+    border:none;
+    padding:12px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.extract-btn{
+    background:#00c853;
+    color:white;
+}
+
+.extract-btn:hover{
+    transform:scale(1.05);
+    background:#00a844;
+}
+
+.translate-btn{
+    background:#2962ff;
+    color:white;
+}
+
+.translate-btn:hover{
+    transform:scale(1.05);
+}
+
+textarea{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+    border:none;
+    margin-top:10px;
+    resize:none;
+    min-height:180px;
+    font-size:15px;
+}
+
+.section-title{
+    margin-top:25px;
+    margin-bottom:10px;
+}
+
+.language-row{
+    display:flex;
+    gap:15px;
+    margin-top:15px;
+}
+
+select{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-size:15px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#ddd;
+}
+
+@media(max-width:768px){
+
+.upload-section,
+.language-row{
+    flex-direction:column;
+}
+
+.title h1{
+    font-size:28px;
+}
+
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="overlay"></div>
+
+<div class="container">
+
+<div class="card">
+
+<div class="title">
+<h1>🌍 AI Image Translator</h1>
+<p>Upload Image → Extract Text → Translate Instantly</p>
+</div>
+
+<form action="/extract" method="POST" enctype="multipart/form-data">
+
+<div class="upload-section">
+
+<input type="file" name="image" required>
+
+<button class="btn extract-btn">
+Extract Text
+</button>
+
+</div>
+
+</form>
+
+{% if extracted_text %}
+
+<h3 class="section-title">📄 Extracted Text</h3>
+
+<form action="/translate" method="POST">
+
+<textarea name="text">{{ extracted_text }}</textarea>
+
+<div class="language-row">
+
+<select name="language">
+
+<option value="ta">Tamil</option>
+<option value="hi">Hindi</option>
+<option value="fr">French</option>
+<option value="de">German</option>
+<option value="es">Spanish</option>
+<option value="ja">Japanese</option>
+<option value="ko">Korean</option>
+<option value="zh-cn">Chinese</option>
+<option value="ar">Arabic</option>
+
+</select>
+
+<button class="btn translate-btn">
+Translate
+</button>
+
+</div>
+
+</form>
+
+{% endif %}
+
+{% if translated_text %}
+
+<h3 class="section-title">🌐 Translated Text</h3>
+
+<textarea readonly>{{ translated_text }}</textarea>
+
+{% endif %}
+
+<div class="footer">
+✨ Powered by OCR & AI Translation
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

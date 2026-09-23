@@ -1,0 +1,10 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+.env
+.env.*
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+*.log
